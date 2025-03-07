@@ -62,6 +62,14 @@ class HomePage {
 	}
 
 	@Test
+	void Welcome_to_Restful_Booker_displays()
+	{
+		
+		WebElement heading = driver.findElement(By.tagName("h1"));
+		assertThat(heading.getText()).contains("Welcome to Restful Booker");
+	}
+	
+	@Test
 	void Homepage_image_is_logo() 
 	{
 		WebElement logo = driver.findElement(By.className("hotel-logoUrl"));
@@ -98,7 +106,7 @@ class HomePage {
 	}
 	
 	@Test
-	void Sucessfully_book_a_2_night_stay() 
+	void Danger_alert_appears_when_missing_info() throws InterruptedException 
 	{
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 				WebElement logo = wait.until(
@@ -106,14 +114,6 @@ class HomePage {
 		ScrollToView(logo);
 		WebElement button = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div/div[3]/button"));
 		button.click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		Actions actions = new Actions(driver);
-		WebElement draggable = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[1]/div[1]"));
-		int offset = 150;
-		Point initLocation = draggable.getLocation();
-		actions.moveToElement(draggable).clickAndHold();
-		actions.moveToElement(driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[5]/div[1]/div[3]")));
-		actions.release().build().perform();
 		WebElement firstNameInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("firstname")));
 		WebElement lastNameInput = driver.findElement(By.name("lastname"));
 		WebElement emailInput = driver.findElement(By.name("email"));
@@ -131,10 +131,93 @@ class HomePage {
 		
 		
 		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[3]/button[2]")).click();
+		Thread.sleep(500);
+		assertThat(driver.findElement(By.cssSelector(".alert-danger")));
+	}
+	
+	@Test
+	void Contact_alert_message_displays() throws InterruptedException
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement contact = wait.until(
+				ExpectedConditions.presenceOfElementLocated(By.className("contact")));
+		ScrollToView(contact);
+		WebElement submitBtn = driver.findElement(By.id("submitContact"));
+		submitBtn.click();
+		
+		Thread.sleep(500);
+		assertThat(driver.findElement(By.cssSelector(".alert-danger")));
+		
+	}
+	
+	@Test
+	void Contact_sucessfully_submits_message()
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement contact = wait.until(
+				ExpectedConditions.presenceOfElementLocated(By.className("contact")));
+		ScrollToView(contact);
+		WebElement submitBtn = driver.findElement(By.id("submitContact"));
+		WebElement nameInput = driver.findElement(By.id("name"));
+		WebElement emailInput = driver.findElement(By.id("email"));
+		WebElement phoneInput = driver.findElement(By.id("phone"));
+		WebElement subjectInput = driver.findElement(By.id("subject"));
+		WebElement descriptionInput = driver.findElement(By.id("description"));
+		
+		String nameValue = "TestUser";
+		nameInput.sendKeys(nameValue);
+		String emailValue = "testuser@email.com";
+		emailInput.sendKeys(emailValue);
+		String phoneValue = "12345678900";
+		phoneInput.sendKeys(phoneValue);
+		String subjectValue = "Test Subject";
+		subjectInput.sendKeys(subjectValue);
+		String descriptionValue = "This is a test message for testing out the contact fields at the bottom";
+		descriptionInput.sendKeys(descriptionValue);
+		submitBtn.click();
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		WebElement confirmMsg = driver.findElement
+								(By.cssSelector("#root > div > div > div.row.contact > div > div > h2"));
+		assertThat(confirmMsg.getText()).contains("Thanks for getting in touch");
+	}
+	
+	@Test
+	void Calender_select_dates() throws InterruptedException
+	{
+		
+		WebElement bookingBtn = driver.findElement(By.className("openBooking"));
+		ScrollToView(bookingBtn);
+		bookingBtn.click();
+		//WebElement nextMonth = driver.findElement(null)
+		WebElement date1 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[1]/button"));
+		WebElement date2 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[2]/button"));
+		WebElement date3 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[3]/button"));
+		WebElement date4 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[4]/button"));
+		Actions action = new Actions(driver);
+		action.clickAndHold(date1).moveToElement(date2).moveToElement(date3).moveToElement(date4);
+		action.release().build().perform();
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement firstNameInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("firstname")));
+		WebElement lastNameInput = driver.findElement(By.name("lastname"));
+		WebElement emailInput = driver.findElement(By.name("email"));
+		WebElement phoneInput = driver.findElement(By.name("phone"));
 		
 		
-		assertThat(firstNameInput.getDomAttribute("value")).isEqualTo(firstNameValue);
-		assertThat(driver.findElement(By.xpath("/html/body/div[4]/div/div/div[1]/div[2]/h3")))
-					.isEqualTo("Booking Succesful");
+		String firstNameValue = "Test";
+		firstNameInput.sendKeys(firstNameValue);
+		String lastNameValue = "User";
+		lastNameInput.sendKeys(lastNameValue);
+		String emailValue = "testuser123@email.com";
+		emailInput.sendKeys(emailValue);
+		String phoneValue = "12345678900";
+		phoneInput.sendKeys(phoneValue);
+		
+		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[3]/button[2]")).click();
+		Thread.sleep(500);
+		WebElement confirmation = driver.findElement(By.xpath("/html/body/div[4]/div/div/div[1]/div[2]/h3"));
+		assertThat(confirmation.getText()).contains("Booking Successful");
+		
 	}
 }
