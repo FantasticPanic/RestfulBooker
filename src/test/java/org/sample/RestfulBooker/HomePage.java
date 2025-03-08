@@ -112,7 +112,7 @@ class HomePage {
 				WebElement logo = wait.until(
 						ExpectedConditions.presenceOfElementLocated(By.className("hotel-logoUrl")));
 		ScrollToView(logo);
-		WebElement button = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div/div[3]/button"));
+		WebElement button = driver.findElement(By.cssSelector(".btn.btn-outline-primary.float-right.openBooking"));
 		button.click();
 		WebElement firstNameInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("firstname")));
 		WebElement lastNameInput = driver.findElement(By.name("lastname"));
@@ -129,8 +129,7 @@ class HomePage {
 		String phoneValue = "12345678900";
 		phoneInput.sendKeys(phoneValue);
 		
-		
-		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[3]/button[2]")).click();
+		driver.findElement(By.cssSelector(".btn.btn-outline-primary.float-right.book-room")).click();
 		Thread.sleep(500);
 		assertThat(driver.findElement(By.cssSelector(".alert-danger")));
 	}
@@ -183,17 +182,15 @@ class HomePage {
 	}
 	
 	@Test
-	void Calender_select_dates() throws InterruptedException
+	void Calendar_select_dates() throws InterruptedException
 	{
-		
 		WebElement bookingBtn = driver.findElement(By.className("openBooking"));
 		ScrollToView(bookingBtn);
 		bookingBtn.click();
-		//WebElement nextMonth = driver.findElement(null)
-		WebElement date1 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[1]/button"));
-		WebElement date2 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[2]/button"));
-		WebElement date3 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[3]/button"));
-		WebElement date4 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[2]/div/div[2]/div[4]/div[2]/div/div[4]/button"));
+		WebElement date1 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '09']"));
+		WebElement date2 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '10']"));
+		WebElement date3 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '11']"));
+		WebElement date4 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '12']"));
 		Actions action = new Actions(driver);
 		action.clickAndHold(date1).moveToElement(date2).moveToElement(date3).moveToElement(date4);
 		action.release().build().perform();
@@ -204,7 +201,6 @@ class HomePage {
 		WebElement emailInput = driver.findElement(By.name("email"));
 		WebElement phoneInput = driver.findElement(By.name("phone"));
 		
-		
 		String firstNameValue = "Test";
 		firstNameInput.sendKeys(firstNameValue);
 		String lastNameValue = "User";
@@ -214,7 +210,7 @@ class HomePage {
 		String phoneValue = "12345678900";
 		phoneInput.sendKeys(phoneValue);
 		
-		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div[2]/div[3]/button[2]")).click();
+		driver.findElement(By.className("book-room")).click();
 		Thread.sleep(500);
 		WebElement confirmation = driver.findElement(By.xpath("/html/body/div[4]/div/div/div[1]/div[2]/h3"));
 		assertThat(confirmation.getText()).contains("Booking Successful");
