@@ -33,6 +33,14 @@ class HomePage {
 	JavascriptExecutor js = (JavascriptExecutor) driver;
 	String script = "arguments[0].scrollIntoView();";
 
+	public Object ScrollToView(WebElement element)
+	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String script = "arguments[0].scrollIntoView();";
+		
+		return js.executeScript (script, element);
+	}
+	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		WebDriverManager.chromedriver().setup();
@@ -53,13 +61,6 @@ class HomePage {
 		driver.quit();
 	}
 	
-	public Object ScrollToView(WebElement element)
-	{
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String script = "arguments[0].scrollIntoView();";
-		
-		return js.executeScript (script, element);
-	}
 
 	@Test
 	void Welcome_to_Restful_Booker_displays()
@@ -210,7 +211,7 @@ class HomePage {
 		String phoneValue = "12345678900";
 		phoneInput.sendKeys(phoneValue);
 		
-		driver.findElement(By.className("book-room")).click();
+		driver.findElement(By.cssSelector(".btn.btn-outline-primary.float-right.book-room")).click();
 		Thread.sleep(500);
 		WebElement confirmation = driver.findElement(By.xpath("/html/body/div[4]/div/div/div[1]/div[2]/h3"));
 		assertThat(confirmation.getText()).contains("Booking Successful");
