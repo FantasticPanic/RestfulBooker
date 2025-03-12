@@ -146,8 +146,7 @@ class HomePage {
 		submitBtn.click();
 		
 		Thread.sleep(500);
-		assertThat(driver.findElement(By.cssSelector(".alert-danger")));
-		
+		assertThat(driver.findElement(By.cssSelector(".alert-danger")));	
 	}
 	
 	@Test
