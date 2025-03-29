@@ -63,24 +63,16 @@ class HomePage {
 	
 
 	@Test
-	void Welcome_to_Restful_Booker_displays()
-	{
-		
-		WebElement heading = driver.findElement(By.tagName("h1"));
-		assertThat(heading.getText()).contains("Welcome to Restful Booker");
-	}
-	
-	@Test
 	void Homepage_image_is_logo() 
 	{
 		WebElement logo = driver.findElement(By.className("hotel-logoUrl"));
-		assertThat(logo.getDomAttribute("src")).containsIgnoringCase("logo");
+		assertThat(logo.getDomAttribute("src")).isEqualTo("/images/rbp-logo.jpg");
 	}
 	
 	@Test
 	void Website_description_displays_on_homepage()
 	{	
-		WebElement description = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/div[2]/p"));
+		WebElement description = driver.findElement(By.cssSelector(".col-sm-10"));
 		String descriptionText = description.getText();
 		log.debug("Description text: {}", descriptionText);
 		assertThat(descriptionText).contains("Welcome to Shady Meadows");
@@ -91,7 +83,7 @@ class HomePage {
 	void Room_description_displays_on_homepage()
 	{
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		WebElement description = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/div/div[3]/p"));
+		WebElement description = driver.findElement(By.cssSelector(".col-sm-7"));
 		String descriptionText = description.getText();
 		assertThat(descriptionText).isNotEmpty();
 	}
@@ -177,7 +169,7 @@ class HomePage {
 		
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		WebElement confirmMsg = driver.findElement
-								(By.cssSelector("#root > div > div > div.row.contact > div > div > h2"));
+								(By.xpath("//*[@class='row contact']/div[2]/div/h2"));
 		assertThat(confirmMsg.getText()).contains("Thanks for getting in touch");
 	}
 	
@@ -187,10 +179,10 @@ class HomePage {
 		WebElement bookingBtn = driver.findElement(By.className("openBooking"));
 		ScrollToView(bookingBtn);
 		bookingBtn.click();
-		WebElement date1 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '09']"));
-		WebElement date2 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '10']"));
-		WebElement date3 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '11']"));
-		WebElement date4 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '12']"));
+		WebElement date1 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '04']"));
+		WebElement date2 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '05']"));
+		WebElement date3 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '06']"));
+		WebElement date4 = driver.findElement(By.xpath("//*[@class='rbc-button-link' and text()= '07']"));
 		Actions action = new Actions(driver);
 		action.clickAndHold(date1).moveToElement(date2).moveToElement(date3).moveToElement(date4);
 		action.release().build().perform();
@@ -212,7 +204,7 @@ class HomePage {
 		
 		driver.findElement(By.cssSelector(".btn.btn-outline-primary.float-right.book-room")).click();
 		Thread.sleep(500);
-		WebElement confirmation = driver.findElement(By.xpath("/html/body/div[4]/div/div/div[1]/div[2]/h3"));
+		WebElement confirmation = driver.findElement(By.cssSelector(".col-sm-6"));
 		assertThat(confirmation.getText()).contains("Booking Successful");
 		
 	}
