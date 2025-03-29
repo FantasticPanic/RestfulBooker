@@ -30,8 +30,6 @@ class HomePage {
 	static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	String sutURL = "https://automationintesting.online/";
-	JavascriptExecutor js = (JavascriptExecutor) driver;
-	String script = "arguments[0].scrollIntoView();";
 
 	public Object ScrollToView(WebElement element)
 	{
